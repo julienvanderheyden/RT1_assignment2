@@ -11,6 +11,7 @@ import actionlib
 import assignment_2_2024.msg
 from assignment2_rt.msg import Posvel
 from nav_msgs.msg import Odometry
+from std_msgs.msg import Float64MultiArray
 
 class User:
 
@@ -24,6 +25,7 @@ class User:
         self.action_client = actionlib.SimpleActionClient('reaching_goal', assignment_2_2024.msg.PlanningAction)
         self.odom_sub = rospy.Subscriber('/odom', Odometry , self.odom_callback)
         self.posvel_pub = rospy.Publisher('/posvel', Posvel, queue_size=10)
+        self.target_pub = rospy.Publisher('/target', Float64MultiArray, queue_size=10)
 
         # Waits until the action server has started up and started
         # listening for goals.
@@ -114,9 +116,14 @@ class User:
         goal.target_pose.pose.orientation.y = 0.0
         goal.target_pose.pose.orientation.z = 0.0
         goal.target_pose.pose.orientation.w = 1.0
+        
+        target_msg = Float64MultiArray()
+        target_msg.data = [x,y]
+        self.target_pub.publish(target_msg)
 
         self.action_client.send_goal(goal, feedback_cb = self.feedback_cb)
         rospy.loginfo(f"New goal sent: x = {x}, y = {y}")
+        
 
     def cancel_goal(self):
         """Function to cancel the current goal."""
