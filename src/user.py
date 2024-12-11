@@ -150,4 +150,3 @@ if __name__ == '__main__':
         rospy.spin()
     except rospy.ROSInterruptException:
         rospy.loginfo("User node shut down.")
-

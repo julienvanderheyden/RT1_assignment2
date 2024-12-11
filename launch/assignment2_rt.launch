@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find assignment_2_2024)/launch/assignment1.launch" />
+    <node pkg="assignment2_rt" type="user.py" name="user" output="screen"/>
+    <node pkg="assignment2_rt" type="TSN.py" name="TSN" output="screen"/>
+</launch>
