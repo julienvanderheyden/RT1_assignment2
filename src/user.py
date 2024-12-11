@@ -9,6 +9,8 @@ import actionlib
 # Brings in the messages used by the reaching_goal action, including the
 # goal message and the feedback message.
 import assignment_2_2024.msg
+from assignment2_rt.msg import Posvel
+from nav_msgs.msg import Odometry
 
 class User:
 
@@ -20,6 +22,8 @@ class User:
 
         # Creates the SimpleActionClient
         self.action_client = actionlib.SimpleActionClient('reaching_goal', assignment_2_2024.msg.PlanningAction)
+        self.odom_sub = rospy.Subscriber('/odom', Odometry , self.odom_callback)
+        self.posvel_pub = rospy.Publisher('/posvel', Posvel, queue_size=10)
 
         # Waits until the action server has started up and started
         # listening for goals.
@@ -118,6 +122,20 @@ class User:
         """Function to cancel the current goal."""
         self.action_client.cancel_goal()
         rospy.loginfo("Goal canceled successfully.")
+        
+    def odom_callback(self, data):
+    	"""Callback publishing custom messages on another topic"""
+    	msg = Posvel()
+    	msg.x = data.pose.pose.position.x
+    	msg.y = data.pose.pose.position.y
+    	msg.vel_x = data.twist.twist.linear.x
+    	msg.vel_y = data.twist.twist.linear.y
+    	
+    	self.posvel_pub.publish(msg)
+    	
+    	
+        
+    
 
 if __name__ == '__main__':
     try:
