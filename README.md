@@ -1,4 +1,4 @@
-# Assignment 2: Research Track 1
+# Assignment 2: Action/Service Implementation
 
 This project is part of the second assignment for the **"Research Track 1"** course. It involves the implementation of a ROS package called `assignment2_rt`. The package provides two nodes to interact with an action server from another package (`assignment_2_2024`) and manage robot goals and target tracking.
 
@@ -19,6 +19,8 @@ The `assignment2_rt` package contains two nodes:
 - Subscribes to the `/target` topic to keep track of the latest goal.
 - Service request and response are defined in `srv/GetTarget.srv`.
 
+  ---
+
 ## **Running the Project**
 
 There are two ways to run the project:
@@ -37,6 +39,28 @@ Alternatively, you can use the dedicated launch file to start all components:
 roslaunch assignment2_rt assignment2_rt.launch
 ```
 **Note**: Using this method merges logs from all nodes into one terminal, which may reduce clarity.
+
+---
+
+## Package Structure
+
+```plaintext
+assignment2_rt/
+├── src/
+│   ├── user.py               # Implementation of the user node
+│   ├── TSN.py                # Implementation of the TargetServiceNode
+├── msg/
+│   ├── Posvel.msg            # Definition of the custom message type for /posvel topic
+├── srv/
+│   ├── GetTarget.srv         # Definition of the service request and response
+├── launch/
+│   ├── assignment2_rt.launch # Custom launch file to start all components
+└── README.md                 # Project documentation
+└── CMakeLists.txt	      # Building files 
+└── package.xml			
+```
+
+---
 
 
 ## **Dependencies**
@@ -60,6 +84,8 @@ To run this project, the following dependencies are required:
 
 ### **Standard Python Libraries**
 - `threading`: Used in the `user.py` script to manage terminal input concurrently.
+
+---
 
 ## **Custom Message and Service Definitions**
 
